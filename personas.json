@@ -1,0 +1,102 @@
+[
+  {
+    "first_name": "María",
+    "last_name": "González",
+    "phone_number": 5523456789
+  },
+  {
+    "first_name": "Juan",
+    "last_name": "Pérez",
+    "phone_number": 5512345678
+  },
+  {
+    "first_name": "Luis",
+    "last_name": "Hernández",
+    "phone_number": 5534567890
+  },
+  {
+    "first_name": "Ana",
+    "last_name": "Martínez",
+    "phone_number": 5543219876
+  },
+  {
+    "first_name": "Carlos",
+    "last_name": "López",
+    "phone_number": 5556781234
+  },
+  {
+    "first_name": "Lucía",
+    "last_name": "Ramírez",
+    "phone_number": 5598765432
+  },
+  {
+    "first_name": "Diego",
+    "last_name": "Fernández",
+    "phone_number": 5587654321
+  },
+  {
+    "first_name": "Elena",
+    "last_name": "Rojas",
+    "phone_number": 5576543210
+  },
+  {
+    "first_name": "Pedro",
+    "last_name": "Cruz",
+    "phone_number": 5565432109
+  },
+  {
+    "first_name": "Sofía",
+    "last_name": "Torres",
+    "phone_number": 5547890123
+  },
+  {
+    "first_name": "Miguel",
+    "last_name": "Morales",
+    "phone_number": 5532123456
+  },
+  {
+    "first_name": "Valeria",
+    "last_name": "Jiménez",
+    "phone_number": 5520987654
+  },
+  {
+    "first_name": "Jorge",
+    "last_name": "Sánchez",
+    "phone_number": 5511223344
+  },
+  {
+    "first_name": "Fernanda",
+    "last_name": "Reyes",
+    "phone_number": 5599001122
+  },
+  {
+    "first_name": "Andrés",
+    "last_name": "Ortega",
+    "phone_number": 5577889900
+  },
+  {
+    "first_name": "Daniela",
+    "last_name": "Núñez",
+    "phone_number": 5588443322
+  },
+  {
+    "first_name": "Héctor",
+    "last_name": "Aguilar",
+    "phone_number": 5566778899
+  },
+  {
+    "first_name": "Isabel",
+    "last_name": "Mendoza",
+    "phone_number": 5554433221
+  },
+  {
+    "first_name": "Tomás",
+    "last_name": "Vega",
+    "phone_number": 5533998877
+  },
+  {
+    "first_name": "Camila",
+    "last_name": "Castro",
+    "phone_number": 5544112233
+  }
+]

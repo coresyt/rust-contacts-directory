@@ -6,8 +6,8 @@ use std::io::{Write, stdout};
 use std::{thread, time};
 
 fn main() {
+    print!("\x1B[2J\x1B[H");
     loop {
-        print!("\x1B[2J\x1B[H");
         const OPTIONS: [&'static str; 5] = [
             "Search Contact",
             "Add Contact",
@@ -16,7 +16,7 @@ fn main() {
             "Exit",
         ];
         let mut option_index: String = String::new();
-        let contacts: Vec<IContact> = vec![
+        let mut contacts: Vec<IContact> = vec![
             IContact {
                 first_name: "Pedro",
                 last_name: "Diaz",
@@ -93,9 +93,62 @@ fn main() {
                 }
                 println!();
                 thread::sleep(time::Duration::from_secs(10));
+                print!("\x1B[2J\x1B[H");
             }
             2 => {
-                println!("Creating...")
+                print!("\x1B[2J\x1B[H");
+                let mut new_first_name = String::new();
+                let mut new_last_name = String::new();
+                let mut new_phone_number_str = String::new();
+                let mut is_sure_str = String::new();
+
+                print!("What will your first name be? ");
+                stdout().flush().unwrap();
+                let _ = stdin().read_line(&mut new_first_name);
+
+                print!("What will your last name be? ");
+                stdout().flush().unwrap();
+                let _ = stdin().read_line(&mut new_last_name);
+
+                print!("What is the phone number? ");
+                stdout().flush().unwrap();
+                let _ = stdin().read_line(&mut new_phone_number_str);
+
+                let new_phone_number_int: u64 = match new_phone_number_str.trim().parse() {
+                    Ok(c) => c,
+                    Err(_e) => {
+                        eprintln!("Your phone number provided is a invalid number.\nRetry!!!");
+                        continue;
+                    }
+                };
+
+                let new_contact = IContact {
+                    first_name: new_first_name.trim_end(),
+                    last_name: new_last_name.trim_end(),
+                    phone_number: new_phone_number_int,
+                };
+
+                println!(
+                    "Last Name is {}\nFirst Name is {}\nPhone Number is +{}",
+                    new_contact.last_name, new_contact.first_name, new_contact.phone_number
+                );
+                print!("Are you sure you want to continue? (y/n) ");
+                stdout().flush().unwrap();
+                let _ = stdin().read_line(&mut is_sure_str);
+
+                match (is_sure_str.to_lowercase()).as_str() {
+                    "yes" | "y" => {
+                        contacts.push(new_contact);
+                        print!("\x1B[2J\x1B[H");
+                        continue;
+                    }
+                    "not" | "n" | _ => {
+                        print!("\x1B[2J\x1B[H");
+
+                        eprintln!("Canceled operation!!!");
+                        continue;
+                    }
+                }
             }
             3 => {
                 println!("Updating...")
@@ -116,10 +169,13 @@ fn main() {
                 print!("3...");
                 stdout().flush().unwrap();
                 thread::sleep(time::Duration::from_secs(1));
+                print!("\x1B[2J\x1B[H");
+
                 break;
             }
             _ => {
-                println!("Retry!!!");
+                print!("\x1B[2J\x1B[H");
+                eprintln!("Retry!!!");
                 continue;
             }
         }

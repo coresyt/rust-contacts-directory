@@ -2,7 +2,7 @@ use serde;
 use serde_json;
 use std::fs;
 
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[derive(Clone, Copy, serde::Serialize, serde::Deserialize, Debug)]
 pub struct IContact<'a> {
     pub first_name: &'a str,
     pub last_name: &'a str,

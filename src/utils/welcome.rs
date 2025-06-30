@@ -1,4 +1,4 @@
-use crate::utils::{show_contacts, json::IContact};
+use crate::utils::{json::IContact, show_contacts};
 
 pub fn welcome(
     contacts_length: usize,

@@ -157,18 +157,18 @@ fn main() {
                 println!("Deleting...")
             }
             5 => {
-                println!("Exit...");
+                print!("Exit...");
+                thread::sleep(time::Duration::from_secs(1));
                 print!("1...");
                 stdout().flush().unwrap();
-                thread::sleep(time::Duration::from_secs(1));
 
+                thread::sleep(time::Duration::from_secs(1));
                 print!("2...");
                 stdout().flush().unwrap();
-                thread::sleep(time::Duration::from_secs(1));
 
+                thread::sleep(time::Duration::from_secs(1));
                 print!("3...");
                 stdout().flush().unwrap();
-                thread::sleep(time::Duration::from_secs(1));
                 print!("\x1B[2J\x1B[H");
 
                 break;

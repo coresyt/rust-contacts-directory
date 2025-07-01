@@ -55,12 +55,11 @@ fn main() {
         };
 
         //    Match the option you want to execute
-        //     ? 1 -------> Search Contact
-        //     ? 2 -------> Add Contact
-        //     ? 3 -------> Update Contact
-        //     ? 4 -------> Delete Contact
-        //     ? 5 -------> Exit
-        //     ? _ -------> Retry Question
+        //     ? 1 ------------> Search Contact
+        //     ? 2 ------------> Add Contact
+        //     ? 3 ------------> Update Contact
+        //     ? 4 ------------> Delete Contact
+        //     ? 5 or _ -------> Exit
         match option_index_int {
             1 => {
                 let mut search: Vec<IContact> = Vec::new();
@@ -151,12 +150,13 @@ fn main() {
                 }
             }
             3 => {
+                
                 println!("Updating...")
             }
             4 => {
                 println!("Deleting...")
             }
-            5 => {
+            5 | _ => {
                 print!("Exit...");
                 thread::sleep(time::Duration::from_secs(1));
                 print!("1...");
@@ -172,11 +172,6 @@ fn main() {
                 print!("\x1B[2J\x1B[H");
 
                 break;
-            }
-            _ => {
-                print!("\x1B[2J\x1B[H");
-                eprintln!("Retry!!!");
-                continue;
             }
         }
     }

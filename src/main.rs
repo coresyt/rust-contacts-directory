@@ -16,7 +16,7 @@ fn main() {
             "Exit",
         ];
         let mut option_index: String = String::new();
-        let mut contacts: Vec<IContact> = utils::json::get_contacts();
+        let contacts: Vec<IContact> = utils::json::get_contacts();
         let contacts_length: usize = contacts.len();
         const OPTIONS_LENGTH: usize = OPTIONS.len();
         const OPTIONS_TO_UPDATE: [&str; 3] = ["First Name", "Last Name", "Phone Number"];
@@ -123,7 +123,15 @@ fn main() {
 
                 match (is_sure_str.to_lowercase()).as_str() {
                     "yes" | "y" => {
-                        contacts.push(new_contact);
+                        let is_created = utils::json::add_contact(new_contact);
+                        if is_created == false {
+                            println!();
+                            thread::sleep(time::Duration::from_secs(10));
+                            print!("\x1B[2J\x1B[H");
+                            println!("There was an error in the create");
+                            continue 'main_loop;
+                        }
+                        
                         print!("\x1B[2J\x1B[H");
                         continue;
                     }
@@ -215,7 +223,15 @@ fn main() {
                     _ => continue 'main_loop,
                 }
 
-                contacts[contact_to_update_is_find_index] = contact_to_update;
+                let is_updated = utils::json::update_contact(contact_to_update_is_find_index, contact_to_update);
+
+                if is_updated == false {
+                    println!();
+                    thread::sleep(time::Duration::from_secs(10));
+                    print!("\x1B[2J\x1B[H");
+                    println!("There was an error in the update");
+                    continue 'main_loop;
+                }
 
                 println!();
                 thread::sleep(time::Duration::from_secs(10));
@@ -255,11 +271,17 @@ fn main() {
                 match (is_sure_str.to_lowercase()).as_str().trim_end() {
                     "yes" | "y" => {
                         print!("\x1B[2J\x1B[H");
-                        contacts.remove(contact_to_delete_is_find_index);
+                        let is_deleted = utils::json::delete_contact(contact_to_delete_is_find_index);
+                        if is_deleted == false {
+                            println!();
+                            thread::sleep(time::Duration::from_secs(10));
+                            print!("\x1B[2J\x1B[H");
+                            println!("There was an error in the update");
+                            continue 'main_loop;
+                        }
                     }
                     "not" | "n" | _ => {
                         print!("\x1B[2J\x1B[H");
-
                         eprintln!("Canceled operation!!!");
                         continue 'main_loop;
                     }

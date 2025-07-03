@@ -16,23 +16,7 @@ fn main() {
             "Exit",
         ];
         let mut option_index: String = String::new();
-        let mut contacts: Vec<IContact> = vec![
-            IContact {
-                first_name: "Pedro",
-                last_name: "Diaz",
-                phone_number: 523327853326,
-            },
-            IContact {
-                first_name: "Juan",
-                last_name: "Pérez",
-                phone_number: 5512345678,
-            },
-            IContact {
-                first_name: "Luis",
-                last_name: "Hernández",
-                phone_number: 5534567890,
-            },
-        ];
+        let mut contacts: Vec<IContact> = utils::json::get_contacts();
         let contacts_length: usize = contacts.len();
         const OPTIONS_LENGTH: usize = OPTIONS.len();
         const OPTIONS_TO_UPDATE: [&str; 3] = ["First Name", "Last Name", "Phone Number"];
@@ -124,8 +108,8 @@ fn main() {
                 };
 
                 let new_contact = IContact {
-                    first_name: new_first_name.trim_end(),
-                    last_name: new_last_name.trim_end(),
+                    first_name: String::from(new_first_name.trim_end()),
+                    last_name: String::from(new_last_name.trim_end()),
                     phone_number: new_phone_number_int,
                 };
 
@@ -157,9 +141,9 @@ fn main() {
                 let mut option_to_update: String = String::new();
                 let mut information_to_update: String = String::new();
                 // * Temporary variables to perform the update
-                let mut contact_to_update: IContact<'_> = IContact {
-                    first_name: "",
-                    last_name: "",
+                let mut contact_to_update: IContact = IContact {
+                    first_name: String::new(),
+                    last_name: String::new(),
                     phone_number: 0,
                 };
                 let mut contact_to_update_is_find: bool = false;
@@ -170,7 +154,7 @@ fn main() {
                 let _ = stdin().read_line(&mut first_name_to_update);
 
                 for i in 0..contacts_length {
-                    let contact = (&contacts).to_vec()[i];
+                    let contact = contacts.clone()[i].clone();
                     let include_with_first_name =
                         contact.first_name.trim_end() == (first_name_to_update.as_str()).trim_end();
 
@@ -207,13 +191,13 @@ fn main() {
                         if information_to_update.len() <= 2 {
                             continue 'main_loop;
                         }
-                        contact_to_update.first_name = information_to_update.as_str().trim();
+                        contact_to_update.first_name = String::from(information_to_update.trim());
                     }
                     1 => {
                         if information_to_update.len() <= 2 {
                             continue 'main_loop;
                         }
-                        contact_to_update.last_name = information_to_update.as_str().trim();
+                        contact_to_update.last_name = String::from(information_to_update.trim());
                     }
                     2 => {
                         if information_to_update.len() <= 2 {
@@ -250,7 +234,7 @@ fn main() {
                 let _ = stdin().read_line(&mut first_name_to_delete);
 
                 for i in 0..contacts_length {
-                    let contact = (&contacts).to_vec()[i];
+                    let contact = contacts.clone()[i].clone();
                     let include_with_first_name =
                         contact.first_name.trim_end() == (first_name_to_delete.as_str()).trim_end();
 

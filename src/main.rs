@@ -72,14 +72,15 @@ fn main() {
                 for i in 0..contacts_length {
                     let contact = &contacts[i];
 
-                    let include_first_name = contact.first_name.contains(&key_to_search.trim());
+                    let include_with_first_name =
+                        contact.first_name.contains(&key_to_search.trim());
                     let include_last_name = contact.last_name.contains(&key_to_search.trim());
                     let include_phone_number = contact
                         .phone_number
                         .to_string()
                         .contains(&key_to_search.trim());
 
-                    if include_first_name == true
+                    if include_with_first_name == true
                         || include_last_name == true
                         || include_phone_number == true
                     {
@@ -156,20 +157,26 @@ fn main() {
                 let mut option_to_update: String = String::new();
                 let mut information_to_update: String = String::new();
                 // * Temporary variables to perform the update
-                let mut contact_to_update: IContact<'_> = IContact { first_name: "", last_name: "", phone_number: 0 };
+                let mut contact_to_update: IContact<'_> = IContact {
+                    first_name: "",
+                    last_name: "",
+                    phone_number: 0,
+                };
                 let mut contact_to_update_is_find: bool = false;
                 let mut contact_to_update_is_find_index: usize = 0;
-                
+
                 print!("Contact by update (provide first name) => ");
                 stdout().flush().unwrap();
                 let _ = stdin().read_line(&mut first_name_to_update);
-                
+
                 for i in 0..contacts_length {
                     let contact = (&contacts).to_vec()[i];
-                    let include_first_name = contact.first_name.trim_end() == (first_name_to_update.as_str()).trim_end();
-                    
-                    if include_first_name == false { continue }
-                    else if contact_to_update_is_find == true && i == (contacts_length - 1) {
+                    let include_with_first_name =
+                        contact.first_name.trim_end() == (first_name_to_update.as_str()).trim_end();
+
+                    if include_with_first_name == false {
+                        continue;
+                    } else if contact_to_update_is_find == true && i == (contacts_length - 1) {
                         continue;
                     }
 
@@ -177,13 +184,12 @@ fn main() {
                     contact_to_update_is_find = true;
                     contact_to_update_is_find_index = i
                 }
-                
-                
+
                 for i in 0..(OPTIONS_TO_UPDATE.len()) {
                     let opt = OPTIONS_TO_UPDATE[i];
                     println!("{}. {}", i + 1, opt);
                 }
-                
+
                 print!("What do you want to modify? ");
                 stdout().flush().unwrap();
                 let _ = stdin().read_line(&mut option_to_update);
@@ -198,15 +204,21 @@ fn main() {
 
                 match option_to_update_int - 1 {
                     0 => {
-                        if information_to_update.len() <= 2 { continue 'main_loop; }
+                        if information_to_update.len() <= 2 {
+                            continue 'main_loop;
+                        }
                         contact_to_update.first_name = information_to_update.as_str().trim();
-                    },
+                    }
                     1 => {
-                        if information_to_update.len() <= 2 { continue 'main_loop; }
+                        if information_to_update.len() <= 2 {
+                            continue 'main_loop;
+                        }
                         contact_to_update.last_name = information_to_update.as_str().trim();
-                    },
+                    }
                     2 => {
-                        if information_to_update.len() <= 2 { continue; }
+                        if information_to_update.len() <= 2 {
+                            continue;
+                        }
                         match information_to_update.trim().parse::<u64>() {
                             Ok(inf) => contact_to_update.phone_number = inf,
                             Err(_e) => {
@@ -216,9 +228,9 @@ fn main() {
                             }
                         }
                     }
-                    _ => continue 'main_loop
+                    _ => continue 'main_loop,
                 }
-                
+
                 contacts[contact_to_update_is_find_index] = contact_to_update;
 
                 println!();
@@ -227,7 +239,52 @@ fn main() {
                 println!("Updating successfully")
             }
             4 => {
-                println!("Deleting...")
+                // * Buffers for the use of inputs
+                let mut first_name_to_delete: String = String::new();
+                let mut contact_to_delete_is_find: bool = false;
+                let mut contact_to_delete_is_find_index: usize = 0;
+                let mut is_sure_str = String::new();
+
+                print!("Contact by remove (provide first name) => ");
+                stdout().flush().unwrap();
+                let _ = stdin().read_line(&mut first_name_to_delete);
+
+                for i in 0..contacts_length {
+                    let contact = (&contacts).to_vec()[i];
+                    let include_with_first_name =
+                        contact.first_name.trim_end() == (first_name_to_delete.as_str()).trim_end();
+
+                    if include_with_first_name == false {
+                        continue;
+                    } else if contact_to_delete_is_find == true && i == (contacts_length - 1) {
+                        continue;
+                    }
+
+                    contact_to_delete_is_find_index = i;
+                    contact_to_delete_is_find = true;
+                }
+
+                print!("Are you sure you want to continue? (y/n) ");
+                stdout().flush().unwrap();
+                let _ = stdin().read_line(&mut is_sure_str);
+
+                match (is_sure_str.to_lowercase()).as_str().trim_end() {
+                    "yes" | "y" => {
+                        print!("\x1B[2J\x1B[H");
+                        contacts.remove(contact_to_delete_is_find_index);
+                    }
+                    "not" | "n" | _ => {
+                        print!("\x1B[2J\x1B[H");
+
+                        eprintln!("Canceled operation!!!");
+                        continue 'main_loop;
+                    }
+                }
+
+                println!();
+                thread::sleep(time::Duration::from_secs(1));
+                print!("\x1B[2J\x1B[H");
+                println!("Remove successfully!!!")
             }
             5 | _ => {
                 print!("Exit...");

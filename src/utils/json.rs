@@ -73,3 +73,48 @@ pub fn add_contact(new_contact: IContact) -> bool {
         }
     };
 }
+
+pub fn update_contact(index_of_contact: usize, new_info_contact: IContact) -> bool {
+    let mut contacts = get_contacts().clone();
+    let new_info_contact_formatted = IContact {
+        first_name: String::from(new_info_contact.first_name.trim_end()),
+        last_name: String::from(new_info_contact.last_name.trim_end()),
+        phone_number: new_info_contact.phone_number,
+    };
+    let first_name_small: bool = new_info_contact_formatted.first_name.len() >= 4;
+    let last_name_small: bool = new_info_contact_formatted.last_name.len() >= 4;
+    let mut file_json = match fs::File::create("personas.json") {
+        Ok(f) => f,
+        Err(_) => match fs::File::open("personas.json") {
+            Ok(f) => f,
+            Err(_) => {
+                println!("1");
+                return false;
+            }
+        },
+    };
+
+    if first_name_small == false || last_name_small == false {
+        println!("2");
+        return false;
+    }
+
+    contacts[index_of_contact] = new_info_contact_formatted;
+
+    let json_in_string = match serde_json::to_string_pretty(&contacts) {
+        Ok(text) => text,
+        Err(_e) => {
+            println!("3");
+            return false;
+        }
+    };
+
+    match file_json.write_all(json_in_string.as_bytes()) {
+        Ok(_) => return true,
+        Err(_) => {
+            println!("4");
+            return false;
+        }
+    };
+}
+

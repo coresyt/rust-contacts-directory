@@ -55,14 +55,16 @@ fn main() {
 
                 for i in 0..contacts_length {
                     let contact = &contacts[i];
+                    let first_name = utils::normalize_string(contact.first_name.as_str());
+                    let last_name = utils::normalize_string(contact.last_name.as_str());
 
                     let include_with_first_name =
-                        contact.first_name.contains(&key_to_search.trim());
-                    let include_last_name = contact.last_name.contains(&key_to_search.trim());
+                        first_name.contains(&utils::normalize_string(key_to_search.trim_end()));
+                    let include_last_name = last_name.contains(&utils::normalize_string(key_to_search.trim_end()));
                     let include_phone_number = contact
                         .phone_number
                         .to_string()
-                        .contains(&key_to_search.trim());
+                        .contains(&key_to_search.trim_end());
 
                     if include_with_first_name == true
                         || include_last_name == true
@@ -73,12 +75,10 @@ fn main() {
                     continue;
                 }
                 utils::show_contacts(search.len(), (&search).to_vec());
-                for searched in search {
-                    println!("{}", searched.first_name)
-                }
                 println!();
-                thread::sleep(time::Duration::from_secs(10));
+                thread::sleep(time::Duration::from_secs(3));
                 print!("\x1B[2J\x1B[H");
+                println!();
             }
             2 => {
                 print!("\x1B[2J\x1B[H");
@@ -163,13 +163,16 @@ fn main() {
 
                 for i in 0..contacts_length {
                     let contact = contacts.clone()[i].clone();
+                    let first_name = utils::normalize_string(contact.first_name.as_str());
                     let include_with_first_name =
-                        contact.first_name.trim_end() == (first_name_to_update.as_str()).trim_end();
+                        first_name.trim_end() == utils::normalize_string(first_name_to_update.as_str()).trim_end();
 
                     if include_with_first_name == false {
                         continue;
-                    } else if contact_to_update_is_find == true && i == (contacts_length - 1) {
-                        continue;
+                    }
+
+                    if contact_to_update_is_find == true {
+                        break;
                     }
 
                     contact_to_update = contact;
@@ -251,8 +254,9 @@ fn main() {
 
                 for i in 0..contacts_length {
                     let contact = contacts.clone()[i].clone();
+                    let first_name = utils::normalize_string(contact.first_name.as_str());
                     let include_with_first_name =
-                        contact.first_name.trim_end() == (first_name_to_delete.as_str()).trim_end();
+                        first_name.trim_end() == utils::normalize_string(first_name_to_delete.as_str()).trim_end();
 
                     if include_with_first_name == false {
                         continue;

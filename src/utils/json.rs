@@ -106,7 +106,7 @@ pub fn update_contact(index_of_contact: usize, new_info_contact: IContact) -> bo
     
     match file_json.write_all(json_in_string.as_bytes()) {
         Ok(_) => return true,
-        Err(e) => {
+        Err(_) => {
             return false;
         }
     };
@@ -124,7 +124,7 @@ pub fn delete_contact(index_of_contact: usize) -> bool {
         },
     };
 
-    if (contacts.len() - 1) < index_of_contact || index_of_contact { return false; }
+    if (contacts.len() - 1) < index_of_contact{ return false; }
 
     contacts.remove(index_of_contact);
 

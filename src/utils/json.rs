@@ -30,17 +30,8 @@ pub fn add_contact(new_contact: IContact) -> bool {
         last_name: String::from(new_contact.last_name.trim_end()),
         phone_number: new_contact.phone_number,
     };
-    let first_name_small: bool = new_contact_formatted.first_name.len() >= 4;
-    let last_name_small: bool = new_contact_formatted.last_name.len() >= 4;
-    let mut file_json = match fs::File::create("personas.json") {
-        Ok(f) => f,
-        Err(_) => match fs::File::open("personas.json") {
-            Ok(f) => f,
-            Err(_) => {
-                return false;
-            }
-        },
-    };
+    let first_name_small: bool = new_contact_formatted.first_name.len() > 2;
+    let last_name_small: bool = new_contact_formatted.last_name.len() > 2;
 
     if first_name_small == false || last_name_small == false {
         return false;
@@ -59,6 +50,13 @@ pub fn add_contact(new_contact: IContact) -> bool {
 
     contacts.push(new_contact);
 
+    let mut file_json = match fs::File::create("personas.json") {
+        Ok(f) => f,
+        Err(_) => {
+            return false
+        }
+    };
+    
     let json_in_string = match serde_json::to_string_pretty(&contacts) {
         Ok(text) => text,
         Err(_) => {
